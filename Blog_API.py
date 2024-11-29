@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
 import os
 import logging
 from fastapi import FastAPI, HTTPException
@@ -140,7 +142,10 @@ def create_chain(retriever, llm):
     logging.info("Chain created with preserved syntax.")
     return chain
 
+
 # FastAPI endpoint to handle query requests
+def invoke_chain(chain, question):
+    return chain.invoke(input=question)
 
 
 @app.post("/ask/")
@@ -156,14 +161,16 @@ async def ask_question(query_request: QueryRequest):
 
     question = query_request.question
     try:
-        # Get the response from the chain
-        res = chain.invoke(input=question)
+        loop = asyncio.get_event_loop()
+        with ThreadPoolExecutor() as pool:
+            # Run the blocking chain.invoke() in a separate thread
+            res = await loop.run_in_executor(pool, invoke_chain, chain, question)
         return {"response": res}
     except Exception as e:
         logging.error(f"Error processing question: {e}")
         raise HTTPException(
-            status_code=500, detail="Error processing the question")
-
+            status_code=500, detail="Error processing the question"
+        )
 # FastAPI app entry point
 if __name__ == "__main__":
     import uvicorn
