@@ -34,7 +34,7 @@ app.add_middleware(
 # Constants
 DOC_PATH = "data"
 MODEL_NAME = "llama3.2"
-EMBEDDING_MODEL = "nomic-embed-text"
+EMBEDDING_MODEL = "mxbai-embed-large"
 VECTOR_STORE_NAME = "Blog_LLM"
 PERSIST_DIRECTORY = "vector_db"
 
