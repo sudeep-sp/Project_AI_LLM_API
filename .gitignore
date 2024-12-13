@@ -3,3 +3,4 @@
 /env
 groq.txt
 .DS_Store
+.env

@@ -9,11 +9,14 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
-from langchain_ollama import ChatOllama
+# from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain.retrievers.multi_query import MultiQueryRetriever
 import ollama
+from dotenv import load_dotenv
+# from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -31,9 +34,13 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
+
+load_dotenv()
+
+os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 # Constants
 DOC_PATH = "data"
-MODEL_NAME = "llama3.2"
+MODEL_NAME = 'gpt-4o-mini'
 EMBEDDING_MODEL = "mxbai-embed-large"
 VECTOR_STORE_NAME = "Blog_LLM"
 PERSIST_DIRECTORY = "vector_db"
@@ -150,7 +157,8 @@ def invoke_chain(chain, question):
 
 @app.post("/ask/")
 async def ask_question(query_request: QueryRequest):
-    llm = ChatOllama(model=MODEL_NAME)
+
+    llm = ChatOpenAI(model=MODEL_NAME)
     vector_db = load_vector_db()
     if vector_db is None:
         raise HTTPException(
