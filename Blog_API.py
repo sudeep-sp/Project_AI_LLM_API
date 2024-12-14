@@ -127,14 +127,14 @@ def create_chain(retriever, llm):
     template = """
     Answer the question based ONLY on the following context. Do not use any external information.
     If the question contains only non-relevant words such as articles (e.g., 'is', 'and', 'the', 'what', etc.), provide no answer.
-    If the question contains significant keywords, generate a brief explanation of the relevant concept and provide the formula if you find one else dont't.
+    If the question contains significant keywords, generate a brief explanation of the relevant concept.
 
     {context}
 
     Question:
     {question}
 
-    just give definition and Explanation dont give unneccesarly response also provide Formula (if you find one else dont't.):
+    just give definition and Explanation dont give unneccesarly response:
     
     """
 
