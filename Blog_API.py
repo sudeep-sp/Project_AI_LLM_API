@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
 # from langchain_ollama import ChatOllama
@@ -17,7 +17,6 @@ import ollama
 from dotenv import load_dotenv
 # from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-
 from fastapi.middleware.cors import CORSMiddleware
 
 # Setup logging
